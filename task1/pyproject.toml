@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "task1"
+version = "0.1.0"
+description = "App to add and retrive logs to and from mongoDB database."
+authors = ["Samuel Zoladz <samuel.zoladz@nokia.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pymongo = "^4.7.2"
+mongomock = "^4.1.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
