@@ -1,7 +1,7 @@
 import logging
 from pymongo.mongo_client import MongoClient
 
-from src import config
+import config
 
 logging.basicConfig(level=config.LOG_LEVEL)
 logger = logging.getLogger(__name__)
@@ -39,3 +39,21 @@ class MongoDBClient:
                 logger.debug(f"Inserted data: {data}")
             except Exception as e:
                 logger.error(f"Failed to insert data: {e}")
+
+    def find_data(self, key, filter_type, value):
+        client = self.connect()
+        if client is not None:
+            try:
+                db = client[config.DATABASE_NAME]
+                collection = db[config.COLLECTION_NAME]
+                query = {key: {filter_type: value}}
+                if collection.count_documents(query) > 0:
+                    data = collection.find(query)
+                    logger.info(f"Retrieved logs successfully.")
+                    return data
+                else:
+                    logger.info(f"No logs found that meet the requirements.")
+                    return None
+            except Exception as e:
+                logger.error(f"Failed to get data: {e}")
+                return None

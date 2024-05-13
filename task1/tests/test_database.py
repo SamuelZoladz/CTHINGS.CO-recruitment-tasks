@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock, patch
-from src.database import MongoDBClient
+from database import MongoDBClient
 
 
 class TestMongoDBClient(unittest.TestCase):
@@ -12,8 +12,8 @@ class TestMongoDBClient(unittest.TestCase):
         second_instance = MongoDBClient()
         self.assertEqual(first_instance, second_instance)
 
-    @patch('src.database.MongoClient')
-    @patch('src.database.config')
+    @patch('database.MongoClient')
+    @patch('database.config')
     def test_connect_success(self, mock_config, mock_mongo_client):
         mock_mongo_client.return_value.admin.command.return_value = {'ok': 1.0}
 
@@ -22,15 +22,15 @@ class TestMongoDBClient(unittest.TestCase):
         mock_mongo_client.assert_called_once_with(mock_config.MONGODB_URI)
         mock_mongo_client.return_value.admin.command.assert_called_with('ping')
 
-    @patch('src.database.MongoClient')
-    @patch('src.database.config')
+    @patch('database.MongoClient')
+    @patch('database.config')
     def test_connect_failure(self, mock_config, mock_mongo_client):
         mock_mongo_client.side_effect = Exception("Connection failure")
         client = self.database.connect()
         self.assertIsNone(client)
         mock_mongo_client.assert_called_once_with(mock_config.MONGODB_URI)
 
-    @patch('src.database.MongoClient')
+    @patch('database.MongoClient')
     def test_insert_data_success(self, mock_mongo_client):
         mock_db = MagicMock()
         mock_collection = MagicMock()
@@ -45,7 +45,7 @@ class TestMongoDBClient(unittest.TestCase):
 
         mock_collection.insert_many.assert_called_once_with(data)
 
-    @patch('src.database.MongoClient')
+    @patch('database.MongoClient')
     def test_insert_data_failure(self, mock_mongo_client):
         mock_db = MagicMock()
         mock_collection = MagicMock()

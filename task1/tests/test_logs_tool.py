@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime
 from unittest.mock import mock_open, patch
 
-from src import logs_tool
+import logs_tool
 
 
 class TestParseLogLine(unittest.TestCase):
@@ -61,7 +61,7 @@ class TestParseLogFile(unittest.TestCase):
                 'message': 'Message two'
             }
         ]
-        with patch('src.logs_tool.parse_log_line') as mock_parse_log_line:
+        with patch('logs_tool.parse_log_line') as mock_parse_log_line:
             mock_parse_log_line.side_effect = lambda x: {
                 'datetime': datetime(2021, 1, 1, 12, 0, 0, 123000),
                 'service': 'TestService',
@@ -81,7 +81,7 @@ class TestParseLogFile(unittest.TestCase):
             "2021-01-01 12:00:00,123 - TestService - INFO - Message one\n",
             "2021-01-01 12:01:00,456 - TestService - ERROR - Message two\n"
         ]
-        with patch('src.logs_tool.parse_log_line') as mock_parse_log_line:
+        with patch('logs_tool.parse_log_line') as mock_parse_log_line:
             mock_parse_log_line.side_effect = ValueError()
             result = logs_tool.parse_log_file(lines)
             self.assertEqual(result, None)
