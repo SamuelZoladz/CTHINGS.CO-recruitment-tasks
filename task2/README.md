@@ -74,3 +74,11 @@ curl -X POST "http://localhost:8000/event" -H "Content-Type: application/json" -
 
 If successful, the message will be sent to the SQS queue and eventually inserted into the MongoDB collection specified 
 in your configuration.
+
+## Testing
+
+Run tests using the following command from the app folder:
+
+```bash
+python -m unittest discover tests
+```
