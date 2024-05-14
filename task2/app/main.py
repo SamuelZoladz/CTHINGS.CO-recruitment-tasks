@@ -11,6 +11,11 @@ logger = logging.getLogger(__name__)
 
 
 def check_queue():
+    """
+    This function continuously checks the SQS queue for new messages. If a message is found,
+    it inserts the message into the MongoDB collection and starts a thread to
+    delete the message from the queue.
+    """
     mongo_client = database.MongoDBClient()
     while True:
         message = sqs.get_from_queue()
@@ -21,6 +26,6 @@ def check_queue():
 
 if __name__ == "__main__":
     threading.Thread(target=check_queue, daemon=True).start()
-    config = uvicorn.Config("api:app", host="0.0.0.0", port=8000)
+    config = uvicorn.Config("api:app", host="0.0.0.0", port=int(config.API_PORT))
     server = uvicorn.Server(config)
     server.run()

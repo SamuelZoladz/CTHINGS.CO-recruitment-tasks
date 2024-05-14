@@ -14,6 +14,10 @@ def parse_log_line(line):
     parts = line.split(split_signs)
     if len(parts) < 4:
         raise ValueError("Log line is malformed, not enough parts: {}".format(line))
+
+    # This loop handles cases where the message part of the log line contains the split_signs.
+    # Example: if parts were ['2023-05-14 12:34:56,789', 'service', 'INFO', 'Message part 1', 'Message part 2']
+    # it would combine 'Message part 1' and 'Message part 2' into 'Message part 1 - Message part 2'.
     while len(parts) > 4:
         parts[-2] = parts[-2] + split_signs + parts[-1]
         parts.pop()
@@ -157,6 +161,7 @@ def main():
     add_parser.add_argument('--file', required=True, help='Path to the log file that needs to be added')
     add_parser.set_defaults(func=add_logs)
 
+
     get_parser = subparsers.add_parser(
         name='get',
         help='Retrieve logs with specific filters',
@@ -180,6 +185,7 @@ def main():
         help='Retrieve log entries where the field is later/greater than this value (only valid for "datetime" field)'
     )
     get_parser.set_defaults(func=get_logs)
+
 
     args = parser.parse_args()
 

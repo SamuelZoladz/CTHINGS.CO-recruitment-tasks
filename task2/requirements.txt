@@ -1,6 +1,0 @@
-boto3~=1.34.103
-uvicorn~=0.29.0
-fastapi~=0.111.0
-aiobotocore~=2.12.3
-pymongo~=4.7.2
-botocore~=1.34.69

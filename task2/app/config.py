@@ -17,8 +17,9 @@ def set_and_check_env_var(var_name):
 LOG_LEVEL = os.getenv('LOG_LEVEL', '').upper()
 
 if LOG_LEVEL not in ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']:
-    LOG_LEVEL = 'INFO'
     logger.warning(f"Invalid LOG_LEVEL: {LOG_LEVEL}. Using default level: INFO.")
+    LOG_LEVEL = 'INFO'
+
 else:
     logger.debug(f"LOG_LEVEL set: {LOG_LEVEL}.")
     LOG_LEVEL = LOG_LEVEL.upper()
@@ -31,3 +32,4 @@ AWS_ENDPOINT_URL = set_and_check_env_var('AWS_ENDPOINT_URL')
 AWS_ACCESS_KEY_ID = set_and_check_env_var('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = set_and_check_env_var('AWS_SECRET_ACCESS_KEY')
 WORKER_QUEUE_URL = set_and_check_env_var('WORKER_QUEUE_URL')
+API_PORT = set_and_check_env_var('API_PORT')

@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  app:
+    image: api-sqs-mongodb-service
+    build:
+      context: ./app
+      args:
+        API_PORT: ${API_PORT}
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    env_file:
+      - .env
+    depends_on:
+      localstack:
+        condition: service_healthy
+
+  localstack:
+    image: localstack/localstack
+    environment:
+      - SERVICES=sqs
+    volumes:
+      - ".localstack:/var/lib/localstack"
+      - ".localstack/init.sh:/etc/localstack/init/ready.d/init.sh"
+    healthcheck:
+      test: ["CMD", "awslocal", "sqs", "get-queue-url", "--queue-name", "app-queue"]
+      interval: 2s
+      timeout: 10s
+      retries: 6

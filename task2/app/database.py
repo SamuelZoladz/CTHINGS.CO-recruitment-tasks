@@ -8,6 +8,12 @@ logger = logging.getLogger(__name__)
 
 
 class MongoDBClient:
+    """
+    Singleton MongoDBClient class to manage MongoDB connections and operations.
+
+    This class implements the Singleton pattern to ensure that only one instance
+    of this class can exist, providing a single point of access to the database connection.
+    """
     _instance = None
 
     def __new__(cls):
